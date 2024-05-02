@@ -1,5 +1,7 @@
 package app.cpu.scheduling;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -28,6 +30,7 @@ public class MainFrame extends javax.swing.JFrame {
         enterBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CPU Scheduling Simulator");
         setName("mainFrame"); // NOI18N
         setPreferredSize(new java.awt.Dimension(1000, 500));
         setResizable(false);
@@ -148,15 +151,16 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void enterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBtnActionPerformed
-        // TODO add your handling code here:
+        ArrayList<ProcessClass> processes = new ArrayList<>();
         int nProcess = this.processSlider.getValue();
-        int contextSwtichTime = this.contextSlider.getValue();
+        int contextSwitchTime = this.contextSlider.getValue();
         int rrTime = this.rrSlider.getValue();
         int algoIndex = this.algoBox.getSelectedIndex();
+        String algoName = this.algorithms[algoIndex];
         String[] processesInfo = this.processTextArea.getText().split("\n");
         
         if (processesInfo.length != nProcess) {
-//            alertBox("Please Enter the Same number of Processes");
+            JOptionPane.showMessageDialog(rootPane, "PLease enter the processes' info correctly.", "Input Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
@@ -164,49 +168,22 @@ public class MainFrame extends javax.swing.JFrame {
         int arrivalTime, burstTime, priority;
         for (int i = 0; i < nProcess; ++i) {
             String[] info = processesInfo[i].split("\\s+");
-            name = info[0];
-            color = info[1].toUpperCase();
             try {
+                name = info[0];
+                color = info[1].toUpperCase();
                 arrivalTime = Integer.parseInt(info[2]);
                 burstTime = Integer.parseInt(info[3]);
                 priority = Integer.parseInt(info[4]);                
-            } catch (NumberFormatException e) {
-                
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(rootPane, "Please enter the processes' information correctly.", "Input Warning", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+            processes.add(new ProcessClass(name, color, arrivalTime, burstTime, priority, rrTime, i));
         }
+        
+        this.scheduler = new Scheduler(nProcess, rrTime, contextSwitchTime, algoIndex, algoName, processes);
+        this.scheduler.simulate();
     }//GEN-LAST:event_enterBtnActionPerformed
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> algoBox;
@@ -220,4 +197,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel rrLabel;
     private javax.swing.JSlider rrSlider;
     // End of variables declaration//GEN-END:variables
+    private Scheduler scheduler;
+    private final String[] algorithms = {"Shortest Job First (SJF)", "Shortest Remaining Time First (SRTF)", "Priority Scheduling", "AG Scheduling"};
 }

@@ -1,8 +1,10 @@
 package app.cpu.scheduling;
 
-public class CpuScheduling extends javax.swing.JFrame {
+public class CpuScheduling {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
     }
 }

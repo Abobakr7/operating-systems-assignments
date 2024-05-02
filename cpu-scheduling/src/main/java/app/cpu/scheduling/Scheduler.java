@@ -100,8 +100,10 @@ public class Scheduler {
         for (ProcessClass pr : this.result) {
             System.out.print(pr.getName() + "\t" + pr.getColor() + "\t\t" + pr.getBurstTime() + "\t\t");
             System.out.print(pr.getArrivalTime() + "\t\t" + pr.getWaitingTime() + "\t\t" + pr.getStartTime() + "\t\t");
-            System.out.println(pr.getCompelationTime() + "\t\t" + pr.getTurnAroundTime());
+            System.out.println(pr.getCompelationTime() + "\t\t" + pr.getTurnAroundTime() + "\n");
         }
+        System.out.println("Average waiting time: " + this.averageWT);
+        System.out.println("Average turnaround time: " + this.averageTAT);
     }
     
     private void shortestRemainingTimeFirst() {
