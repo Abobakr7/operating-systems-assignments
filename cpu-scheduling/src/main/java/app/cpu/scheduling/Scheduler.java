@@ -44,7 +44,8 @@ public class Scheduler {
                 isPreemptive = true;
                 break;
         }
-        // gantt chart
+        GanttChart gantt = new GanttChart(this.algoName, this.nProcess, this.averageTAT, this.averageWT, isPreemptive, this.result);
+        gantt.buildChartWindow();
     }
     
     private void calcAverageWTandTAT() {
