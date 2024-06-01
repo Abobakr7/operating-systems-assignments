@@ -12,27 +12,32 @@ public class DeviceClass implements Runnable {
         this.router = router;
     }
     
-    private void login() {
-        System.out.println("Connection " + this.turn + ": " + this.name + " logged in\n");
+    public String getName() {
+        return this.name;
+    }
+    
+    public String getType() {
+        return this.type;
+    }
+    
+    public void setTurn(int turn) {
+        this.turn = turn;
     }
     
     private void preformActivity() throws InterruptedException {
         Thread.sleep(2000);
-        System.out.println("Connection " + this.turn + ": " + this.name + " performing online activity\n");
+        System.out.println("Connection " + this.turn + ": " + this.name + " performing online activity");
         Thread.sleep(2000);
-    }
-    
-    private void logout() {
-        System.out.println("Connection: " + this.turn + ": " + this.name + " logged out\n");
-//        this.router.disconnect(name);
     }
     
     @Override
     public void run() {
         try {
-            this.login();
+            this.router.occupyConn(this);
+            System.out.println("Connection " + this.turn + ": " + this.name + " logged in");
             this.preformActivity();
-            this.logout();
+            System.out.println("Connection " + this.turn + ": " + this.name + " logged out");
+            this.router.disconnect(name);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
