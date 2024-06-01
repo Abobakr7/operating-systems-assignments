@@ -18,7 +18,7 @@ becuase it can have a big effect on resource utilization and the overall perform
      ii. The running process didn't use all its quantum time based on another process converted from ready to running (add this process to the end of the queue, and then increase its quantum time by the remaining unused quantum time of the process
      iii. The running process finished its job (set its quantum time to zero and remove it from ready queue and add it to the die list).
 
-### Test Case
+#### Test Case
 (pr stands for process)
 the input format for processes is like this: pr_name pr_color pr_arrival_time pr_burst_time pr_priority
 
@@ -29,13 +29,13 @@ It is required to simulate a limited number of devices connected to a router's W
 For example, aa router may wish to have only N connections at any point in time. As soon as N connections are made, the Router will not accept other incoming connections until an existing
 connection is released.
 
-### Following rules should be applied
+#### Following rules should be applied
 - The Wi-Fi number of connected devices is initially empty.
 - If a client is logged in (print a message that the client is logged in) and if it can be served (means that it can reach the internet) then the client should perform online activity (these actions will be represented by printed messages)
 - If a client arrives and all connections are occupied, it must wait until one of the currently available client finish his service and leave.
 - After a client finishes his service, he leave and one the waiting client (if exist) will connect to the internet.
 
-### Test Case
+#### Test Case
 program output is =
 - =What is the maximum number of connections the router can accepts?
 - 2
